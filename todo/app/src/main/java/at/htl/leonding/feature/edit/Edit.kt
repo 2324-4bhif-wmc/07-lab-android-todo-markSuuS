@@ -1,4 +1,4 @@
-package at.htl.leonding.feature.settings
+package at.htl.leonding.feature.edit
 
 import androidx.compose.material3.Text
 
@@ -22,7 +22,7 @@ fun SettingsScreen() {
         verticalArrangement = Arrangement.Center) {
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(
-                text = "Settings",
+                text = "Edit",
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold

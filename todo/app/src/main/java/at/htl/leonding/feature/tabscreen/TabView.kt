@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import at.htl.leonding.feature.home.HomeView
-import at.htl.leonding.feature.settings.SettingsScreen
+import at.htl.leonding.feature.edit.SettingsScreen
 import at.htl.leonding.feature.todo.ToDoView
 import at.htl.leonding.model.Store
 import at.htl.leonding.ui.theme.ToDoTheme
@@ -47,7 +47,7 @@ class TabView @Inject constructor() {
         val tabIndex = tab.index()
         val selectedTab = remember { mutableIntStateOf(tabIndex) }
         val numberOfTodos = model.value.numberOfToDos
-        val tabs = listOf("Home", "ToDos", "Settings")
+        val tabs = listOf("Home", "ToDos", "Edit")
         Column(modifier = Modifier.fillMaxWidth()) {
             TabRow(selectedTabIndex = selectedTab.intValue) {
                 tabs.forEachIndexed { index, title ->
@@ -63,7 +63,7 @@ class TabView @Inject constructor() {
                                 1 -> BadgedBox(badge = { Badge { Text("$numberOfTodos") }}) {
                                     Icon(Icons.Filled.Favorite, contentDescription = "ToDos")
                                 }
-                                2 -> Icon(imageVector = Icons.Default.Settings, contentDescription = null)
+                                2 -> Icon(imageVector = Icons.Default.Create, contentDescription = null)
                             }
                         }
                     )
