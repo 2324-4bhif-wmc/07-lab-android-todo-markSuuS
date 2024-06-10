@@ -1,21 +1,11 @@
 package at.htl.leonding.feature.edit
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.rxjava3.subscribeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,14 +28,57 @@ class EditView @Inject constructor() {
     fun ToDos() {
         val model = editViewModel.subject.subscribeAsState(editViewModel.getValue()).value
         val todos = model.toDos
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)) {
-            items(todos.size) { ToDoRow(todos[it]) }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            items(todos.size) { index ->
+                ToDoRow(
+                    todos[index],
+                    onUpdate = { todo, newTitle -> editViewModel.updateTodo(todo, newTitle) }
+                )
+            }
         }
     }
+
     @Composable
-    fun ToDoRow(toDo: ToDo) {
+    fun ToDoRow(toDo: ToDo, onUpdate: (ToDo, String) -> Unit) {
+        var showDialog by remember { mutableStateOf(false) }
+        var newText by remember { mutableStateOf(toDo.title) }
+
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Edit ToDo") },
+                text = {
+                    Column {
+                        Text("Enter new text:")
+                        OutlinedTextField(
+                            value = newText,
+                            onValueChange = { newText = it },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            onUpdate(toDo, newText)
+                            showDialog = false
+                        }
+                    ) {
+                        Text("Save")
+                    }
+                },
+                dismissButton = {
+                    Button(onClick = { showDialog = false }) {
+                        Text("Cancel")
+                    }
+                }
+            )
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -68,12 +101,12 @@ class EditView @Inject constructor() {
                 )
             }
             Button(
-                onClick = { editViewModel.deleteTodo(toDo) },
+                onClick = { showDialog = true },
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Create,
-                    contentDescription = "Done",
+                    contentDescription = "Edit",
                     tint = Color.White
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -81,6 +114,7 @@ class EditView @Inject constructor() {
             }
         }
     }
+
     @Composable
     fun preview() {
         if (LocalInspectionMode.current) {
@@ -104,11 +138,13 @@ class EditView @Inject constructor() {
             }
         }
     }
+
     @Preview(showBackground = true)
     @Composable
     fun EditViewPreviewPortrait() {
         preview()
     }
+
     @Preview(device = "spec:parent=pixel_5,orientation=landscape")
     @Preview(name = "150%", fontScale = 1.5f, showBackground = true, device = "spec:parent=Nexus 5,orientation=landscape")
     @Composable
@@ -116,3 +152,4 @@ class EditView @Inject constructor() {
         preview()
     }
 }
+

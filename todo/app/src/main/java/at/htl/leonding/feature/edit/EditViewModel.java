@@ -27,10 +27,6 @@ public class EditViewModel extends ViewModelBase<EditViewModel.ToDoModel> {
         return new ToDoModel(List.of(model.toDos));
     }
 
-    public void deleteTodo(ToDo todo){
-        toDoService.deleteById(todo.id);
-    }
-
     public void updateTodo(ToDo todo, String title){
         toDoService.update(todo.id, title);
     }
