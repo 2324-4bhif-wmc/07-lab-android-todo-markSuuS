@@ -1,4 +1,4 @@
-package at.htl.leonding.feature.todo
+package at.htl.leonding.feature.edit
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,13 +32,13 @@ import at.htl.leonding.model.ToDo
 import at.htl.leonding.ui.theme.ToDoTheme
 import javax.inject.Inject
 
-class ToDoView @Inject constructor() {
+class EditView @Inject constructor() {
     @Inject
-    lateinit var toDoViewModel: ToDoViewModel
+    lateinit var editViewModel: EditViewModel
 
     @Composable
     fun ToDos() {
-        val model = toDoViewModel.subject.subscribeAsState(toDoViewModel.getValue()).value
+        val model = editViewModel.subject.subscribeAsState(editViewModel.getValue()).value
         val todos = model.toDos
         LazyColumn(modifier = Modifier
             .fillMaxSize()
@@ -70,7 +70,7 @@ class ToDoView @Inject constructor() {
                 )
             }
             Button(
-                onClick = { toDoViewModel.deleteTodo(toDo) },
+                onClick = { editViewModel.deleteTodo(toDo) },
                 contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
             ) {
                 Icon(
@@ -100,7 +100,7 @@ class ToDoView @Inject constructor() {
 
             val store = Store()
             store.pipe.value!!.toDos = todos
-            toDoViewModel = ToDoViewModel(store, null)
+            editViewModel = EditViewModel(store, null)
             ToDoTheme {
                 ToDos()
             }
@@ -108,13 +108,13 @@ class ToDoView @Inject constructor() {
     }
     @Preview(showBackground = true)
     @Composable
-    fun ToDoViewPreviewPortrait() {
+    fun EditViewPreviewPortrait() {
         preview()
     }
     @Preview(device = "spec:parent=pixel_5,orientation=landscape")
     @Preview(name = "150%", fontScale = 1.5f, showBackground = true, device = "spec:parent=Nexus 5,orientation=landscape")
     @Composable
-    fun ToDoViewPreviewLandscape() {
+    fun EditViewPreviewLandscape() {
         preview()
     }
 }

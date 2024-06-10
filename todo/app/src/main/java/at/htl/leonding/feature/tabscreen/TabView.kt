@@ -26,8 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import at.htl.leonding.feature.edit.EditView
 import at.htl.leonding.feature.home.HomeView
-import at.htl.leonding.feature.edit.SettingsScreen
 import at.htl.leonding.feature.todo.ToDoView
 import at.htl.leonding.model.Store
 import at.htl.leonding.ui.theme.ToDoTheme
@@ -40,6 +40,8 @@ class TabView @Inject constructor() {
     lateinit var homeScreenView: HomeView
     @Inject
     lateinit var toDoView: ToDoView
+    @Inject
+    lateinit var editView: EditView
 
     @Composable
     fun TabViewLayout() {
@@ -81,7 +83,7 @@ class TabView @Inject constructor() {
             when (selectedTab) {
                 0 -> homeScreenView.HomeScreen()
                 1 -> toDoView.ToDos()
-                2 -> SettingsScreen()
+                2 -> editView.ToDos()
             }
         }
     }
@@ -90,7 +92,9 @@ class TabView @Inject constructor() {
         Column(modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center) {
-            Row(modifier = Modifier.align(Alignment.CenterHorizontally).padding(8.dp)) {
+            Row(modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(8.dp)) {
                 Text(text = "Content area of the selected tab", softWrap = true)
             }
         }
