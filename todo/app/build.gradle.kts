@@ -1,15 +1,18 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+
+    kotlin("kapt") // we have to use kapt, because android hilt is still in alpha although kapt is deprecated already ?! :(
+    id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "at.htl.todo"
+    namespace = "at.htl.leonding"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "at.htl.todo"
-        minSdk = 30
+        applicationId = "at.htl.leonding"
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -30,40 +33,79 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.4.3"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/INDEX.LIST"
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/NOTICE.md"
+            excludes += "META-INF/DEPENDENCIES.txt"
         }
     }
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.ktx)
+    implementation(libs.androidx.lifecycle)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.activity.compose)
+
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.compose.ui.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.ui.tooling.preview)
+    implementation(libs.compose.material)
+
+    testImplementation(libs.test.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    androidTestImplementation(libs.androidx.compose.ui.test)
+
+    debugImplementation(libs.debug.compose.ui.tooling)
+    debugImplementation(libs.debug.compose.manifest)
+
+    implementation(libs.rxjava.rxjava)
+    implementation(libs.rxjava.android)
+    implementation(libs.compose.rxjava)
+
+    implementation(libs.dagger.hilt)
+    kapt(libs.kapt.hilt)
+    implementation(libs.fasterxml.jackson)
+    implementation(libs.resteasy.client)
+    implementation(libs.smallrye.config)
+}
+kapt {
+    correctErrorTypes = true
+}
+
+/** JavaDoc helper.
+ * This tasks writes the the class-path to a file that can be used with javadoc
+ * javadoc ... @javadoc.txt
+ */
+tasks.register("javadoc-params") {
+    doLast {
+        val variant = project.android.applicationVariants
+        val release = variant.filter{ it.buildType.name == "release" }.first()
+        val outputFile = project.layout.buildDirectory.file("javadoc.txt").get().asFile
+        outputFile.printWriter().use { out ->
+            val classpath = release.compileConfiguration.joinToString(separator=":") { it.toString() }
+            out.println("--class-path " + classpath)
+            out.println()
+        }
+        println("javadoc options written to " + outputFile.absolutePath)
+    }
 }
