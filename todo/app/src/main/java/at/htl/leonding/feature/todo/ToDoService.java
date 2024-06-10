@@ -47,4 +47,16 @@ public class ToDoService {
         final ToDo[] finalTodos = todos;
         store.apply(model -> model.toDos = finalTodos);
     }
+
+    public void update(Long id, String title){
+        ToDo[] toDos = store.get().toDos;
+        toDos = Arrays.stream(toDos).peek(todo -> {
+            if(todo.id.equals(id)){
+                todo.title = title;
+            }
+
+        }).toArray(ToDo[]::new);
+        final ToDo[] finalToDos = toDos;
+        store.apply(model -> model.toDos = finalToDos);
+    }
 }
