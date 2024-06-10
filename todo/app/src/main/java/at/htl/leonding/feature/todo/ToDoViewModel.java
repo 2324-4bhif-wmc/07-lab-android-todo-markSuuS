@@ -15,11 +15,18 @@ public class ToDoViewModel extends ViewModelBase<ToDoViewModel.ToDoModel> {
     public record ToDoModel(List<ToDo> toDos) {}
 
     @Inject
-    public ToDoViewModel(Store store) {
+    public ToDoViewModel(Store store, ToDoService toDoService) {
         super(store);
+        this.toDoService = toDoService;
     }
+
+    private final ToDoService toDoService;
     @Override
     protected ToDoModel toViewModel(Model model) {
         return new ToDoModel(List.of(model.toDos));
+    }
+
+    public void deleteTodo(ToDo todo){
+        toDoService.deleteById(todo.id);
     }
 }

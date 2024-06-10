@@ -2,6 +2,8 @@ package at.htl.leonding.feature.todo;
 
 import org.eclipse.microprofile.config.Config;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -37,5 +39,12 @@ public class ToDoService {
         CompletableFuture
                 .supplyAsync(() -> toDoClient.all(0, 40))
                 .thenAccept(setToDos);
+    }
+
+    public void deleteById(Long id){
+        ToDo[] todos = store.get().toDos;
+        todos = Arrays.stream(todos).filter(todo -> !todo.id.equals(id)).toArray(ToDo[]::new);
+        final ToDo[] finalTodos = todos;
+        store.apply(model -> model.toDos = finalTodos);
     }
 }

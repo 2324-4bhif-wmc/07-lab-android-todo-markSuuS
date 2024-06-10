@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -61,7 +62,7 @@ class TabView @Inject constructor() {
                             when (index) {
                                 0 -> Icon(imageVector = Icons.Default.Home, contentDescription = null)
                                 1 -> BadgedBox(badge = { Badge { Text("$numberOfTodos") }}) {
-                                    Icon(Icons.Filled.Favorite, contentDescription = "ToDos")
+                                    Icon(Icons.Filled.Check, contentDescription = "ToDos")
                                 }
                                 2 -> Icon(imageVector = Icons.Default.Create, contentDescription = null)
                             }
