@@ -12,8 +12,8 @@ import at.htl.leonding.model.ToDo;
 import at.htl.leonding.util.store.ViewModelBase;
 
 @Singleton
-public class EditViewModel extends ViewModelBase<EditViewModel.ToDoModel> {
-    public record ToDoModel(List<ToDo> toDos) {}
+public class EditViewModel extends ViewModelBase<EditViewModel.EditModel> {
+    public record EditModel(List<ToDo> toDos) {}
 
     @Inject
     public EditViewModel(Store store, ToDoService toDoService) {
@@ -23,8 +23,8 @@ public class EditViewModel extends ViewModelBase<EditViewModel.ToDoModel> {
 
     private final ToDoService toDoService;
     @Override
-    protected ToDoModel toViewModel(Model model) {
-        return new ToDoModel(List.of(model.toDos));
+    protected EditModel toViewModel(Model model) {
+        return new EditModel(List.of(model.toDos));
     }
 
     public void updateTodo(ToDo todo, String title){

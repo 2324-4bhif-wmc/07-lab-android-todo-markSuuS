@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Favorite
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import at.htl.leonding.feature.create.CreateView
 import at.htl.leonding.feature.edit.EditView
 import at.htl.leonding.feature.home.HomeView
 import at.htl.leonding.feature.todo.ToDoView
@@ -42,6 +44,8 @@ class TabView @Inject constructor() {
     lateinit var toDoView: ToDoView
     @Inject
     lateinit var editView: EditView
+    @Inject
+    lateinit var createView: CreateView
 
     @Composable
     fun TabViewLayout() {
@@ -50,7 +54,7 @@ class TabView @Inject constructor() {
         val tabIndex = tab.index()
         val selectedTab = remember { mutableIntStateOf(tabIndex) }
         val numberOfTodos = model.value.numberOfToDos
-        val tabs = listOf("Home", "ToDos", "Edit")
+        val tabs = listOf("Home", "ToDos", "Edit", "Create")
         Column(modifier = Modifier.fillMaxWidth()) {
             TabRow(selectedTabIndex = selectedTab.intValue) {
                 tabs.forEachIndexed { index, title ->
@@ -67,6 +71,7 @@ class TabView @Inject constructor() {
                                     Icon(Icons.Filled.Check, contentDescription = "ToDos")
                                 }
                                 2 -> Icon(imageVector = Icons.Default.Create, contentDescription = null)
+                                3 -> Icon(imageVector = Icons.Default.Add, contentDescription = null)
                             }
                         }
                     )
@@ -84,6 +89,7 @@ class TabView @Inject constructor() {
                 0 -> homeScreenView.HomeScreen()
                 1 -> toDoView.ToDos()
                 2 -> editView.ToDos()
+                3 -> createView.CreateTodo()
             }
         }
     }
