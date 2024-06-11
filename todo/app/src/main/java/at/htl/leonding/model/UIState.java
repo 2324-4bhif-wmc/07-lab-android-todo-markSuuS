@@ -7,7 +7,8 @@ public class UIState {
     public enum Tab {
         home(0),
         todo(1),
-        settings(2);
+        edit(2),
+        create(3);
 
         public int index() {
             return index;

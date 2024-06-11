@@ -28,4 +28,8 @@ public class CreateViewModel extends ViewModelBase<CreateViewModel.CreateModel> 
     protected CreateModel toViewModel(Model model) {
         return new CreateModel(List.of(model.toDos));
     }
+
+    public void create(String title){
+        toDoService.create(title);
+    }
 }

@@ -1,8 +1,10 @@
 package at.htl.leonding.feature.todo;
 
 import org.eclipse.microprofile.config.Config;
+import org.jboss.resteasy.spi.NotImplementedYetException;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -15,6 +17,10 @@ import at.htl.leonding.model.ToDo;
 import at.htl.leonding.util.resteasy.RestApiClientBuilder;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
+
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 @Singleton
 public class ToDoService {
@@ -58,5 +64,9 @@ public class ToDoService {
         }).toArray(ToDo[]::new);
         final ToDo[] finalToDos = toDos;
         store.apply(model -> model.toDos = finalToDos);
+    }
+
+    public void create(String title) {
+        throw new NotImplementedYetException();
     }
 }
