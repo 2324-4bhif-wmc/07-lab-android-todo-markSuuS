@@ -1,0 +1,96 @@
+= Protokoll Android Übung 07 - ToDo
+
+
+== Basis des Projektes
+* Prof. Abergers ToDo-Projekt [https://github.com/caberger/android]
+* Bereits implementiert waren:
+** HomeView mit loadTodo-Button, welcher alle ToDos von der JsonPlaceholder-API holt
+** View für alle ToDos (ID + Title)
+
+== Meine Arbeit: Auf CRUD erweitern
+
+=== Erledigte ToDos abhaken
+* in vorhandener ToDoView DONE-Button hinzugefügt
+
+image::img/todoview.png[width=200]
+
+=== Bearbeiten der vorhandenen ToDos
+* neue View (EditView) implementiert
+
+image::img/editview.png[width=200]
+
+image::img/editview-after.png[width=200]
+
+=== Hinzufügen eines neuen ToDos
+* neue View (CreateView) implementiert
+
+image::img/createview.png[width=200]
+
+* neuem ToDo wird korrekte ID vergeben
+
+image::img/createview-after.png[width=200]
+
+== Aufbau des Projektes
+
+[source,bash]
+----
+...
+│   └── src
+│       └── main
+│           ├── java
+│           │   └── at
+│           │       └── htl
+│           │           └── leonding
+│           │               ├── feature
+│           │               │   ├── create
+│           │               │   ├── edit
+│           │               │   ├── home
+│           │               │   ├── tabscreen
+│           │               │   └── todo
+│           │               ├── model
+│           │               ├── ui
+│           │               │   └── theme
+│           │               └── util
+│           │                   ├── config
+│           │                   ├── immer
+│           │                   ├── mapper
+│           │                   ├── resteasy
+│           │                   └── store
+...
+----
+
+== Code-Beispiele
+
+=== ToDoService.java
+
+[source, java]
+----
+// all imports
+include::todo/app/src/main/java/at/htl/leonding/feature/todo/ToDoService.java[lines=25..85]
+----
+
+=== CreateView.kt
+
+[source, kotlin]
+----
+// all imports
+include::todo/app/src/main/java/at/htl/leonding/feature/create/CreateView.kt[lines=24..53]
+----
+
+=== EditView.kt
+
+[source, kotlin]
+----
+// all imports
+include::todo/app/src/main/java/at/htl/leonding/feature/edit/EditView.kt[lines=23...116]
+// previews
+----
+
+=== TabView.kt
+
+[source, kotlin]
+----
+// all imports
+include::todo/app/src/main/java/at/htl/leonding/feature/tabscreen/TabView.kt[lines=38..95]
+// previews
+----

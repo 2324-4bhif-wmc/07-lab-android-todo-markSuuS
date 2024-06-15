@@ -35,9 +35,7 @@ public class ToDoService {
         this.store = store;
     }
 
-    /** read the first 20 todos from the service.
-     * TODO: add currentPage und pageSize to UIState
-     */
+
     public void getAll() {
         Consumer<ToDo[]> setToDos = todos -> {
             store.apply(model -> model.toDos = todos);
