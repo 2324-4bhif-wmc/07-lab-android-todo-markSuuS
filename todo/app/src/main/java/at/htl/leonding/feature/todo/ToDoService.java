@@ -67,6 +67,21 @@ public class ToDoService {
     }
 
     public void create(String title) {
-        throw new NotImplementedYetException();
+        var todos = store.get().toDos;
+        ToDo newTodo = new ToDo();
+        newTodo.title = title;
+        newTodo.id = todos[todos.length-1].id + 1;
+        store.apply(model -> model.toDos = addTodoToArray(todos, newTodo));
+    }
+
+    private ToDo[] addTodoToArray(ToDo[] todos, ToDo newTodo){
+        ToDo[] newTodos = new ToDo[todos.length+1];
+
+        for(int i = 0; i < todos.length; i++){
+            newTodos[i] = todos[i];
+        }
+
+        newTodos[newTodos.length-1] = newTodo;
+        return newTodos;
     }
 }
